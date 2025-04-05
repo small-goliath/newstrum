@@ -1,8 +1,9 @@
 import os
 import requests
-from main import log
+from logger import get_logger
 from dotenv import load_dotenv
 
+log = get_logger('notofication')
 load_dotenv()
 
 discord_webhook = os.getenv('discord_webhook')
@@ -14,6 +15,8 @@ def send_to_discord(message: str):
     
     if len(message) > 2000:
         message = message[:1997] + "..."
+
+    message = f"```\n{message}\n```"
 
     data = {
         "content": message

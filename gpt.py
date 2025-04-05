@@ -1,5 +1,4 @@
-import logging
-import logging.config
+from logger import get_logger
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -7,8 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-logging.config.fileConfig('logging.conf')
-log = logging.getLogger('GPT')
+log = get_logger('GPT')
 
 def setup():
     options = webdriver.ChromeOptions()
@@ -25,6 +23,7 @@ def setup():
     return webdriver.Chrome(options=options)
 
 def analyze(prompt:str):
+    log.info("ai 페이지 접근 중...")
     try:
         driver = setup()
         driver.get('https://wrtn.ai')
@@ -38,6 +37,7 @@ def analyze(prompt:str):
         input_box.clear()
         input_box.send_keys(prompt)
         input_box.send_keys(Keys.ENTER)
+        log.info("분석 중...")
         sleep(30)
 
         return driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[1]/div[2]/div/div/div/div[1]/div/div/div/div/div[1]/div/div/div/div[3]/div/div[1]/div[1]/div[3]/div[2]/div').text

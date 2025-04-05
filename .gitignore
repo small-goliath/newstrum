@@ -4,3 +4,4 @@ __pycache__/
 backup
 logs
 chrome/
+setup_cron.sh
