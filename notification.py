@@ -14,9 +14,7 @@ def send_to_discord(message: str):
         return
     
     if len(message) > 2000:
-        message = message[:1997] + "..."
-
-    message = f"```\n{message}\n```"
+        message = message[:1994] + "...```"
 
     data = {
         "content": message

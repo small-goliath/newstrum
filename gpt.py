@@ -30,7 +30,7 @@ def analyze(prompt:str):
         sleep(2)
         ad_close_button = driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div/div/div[2]/div/button[1]')
         if ad_close_button:
-            ad_close_button[1].click()
+            ad_close_button[0].click()
 
         WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.XPATH, '//*[@id="rich-textarea"]')))
         input_box = driver.find_element(By.XPATH, '//*[@id="rich-textarea"]')
@@ -38,7 +38,7 @@ def analyze(prompt:str):
         input_box.send_keys(prompt)
         input_box.send_keys(Keys.ENTER)
         log.info("분석 중...")
-        sleep(30)
+        sleep(60)
 
         return driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[1]/div[2]/div/div/div/div[1]/div/div/div/div/div[1]/div/div/div/div[3]/div/div[1]/div[1]/div[3]/div[2]/div').text
     finally:
