@@ -1,6 +1,7 @@
 import os
 import json
 import feedparser
+from mistral import Mistral
 from logger import get_logger
 from newsItem import NewsItem
 import gpt
@@ -10,6 +11,9 @@ log = get_logger('newstrum')
 
 rss_feeds_string = os.getenv("rss_feeds", "")
 RSS_FEEDS = json.loads(rss_feeds_string)
+mistral_api_uri = os.getenv("mistral_api_uri", "https://api.mistral.ai/v1/chat/completions")
+mistral_api_key = os.getenv("mistral_api_key", "")
+mistral_api_model = os.getenv("mistral_api_model", "mistral-small-latest")
 
 def fetch_rss(rss_link: str):
     news_items = []
@@ -31,6 +35,8 @@ def chunk_list(lst, chunk_size):
         yield lst[i:i + chunk_size]
 
 if __name__ == "__main__":
+    mistral = Mistral(api_key=mistral_api_key, uri=mistral_api_uri)
+
     for rss_category, rss_link in RSS_FEEDS.items():
         news_items = fetch_rss(rss_link)
         log.info(f"📌 [{rss_category}]: {len(news_items)}개 수집 완료")
@@ -50,6 +56,6 @@ if __name__ == "__main__":
             3. 향후 경제 분석 및 전망을 간략히 알려 주세요.
             4. 투자 의견이 있다면 알려주세요.
             """
-            result = f'```{gpt.analyze(prompt=prompt)}```'.replace("\n", "\n\n")
+            result = f'```{mistral.analyze(prompt=prompt, model=mistral_api_model)}```'
             notification.send_to_discord(f'[{rss_category}]\n{result}')
             notification.send_to_hangout(f'[{rss_category}]\n{result}')

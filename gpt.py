@@ -40,6 +40,6 @@ def analyze(prompt:str):
         log.info("분석 중...")
         sleep(60)
 
-        return driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[1]/div[2]/div/div/div/div[1]/div/div/div/div/div[1]/div/div/div/div[3]/div/div[1]/div[1]/div[3]/div[2]/div').text
+        return driver.find_element(By.XPATH, '//*[@id="chat-room-message-1"]/div').text
     finally:
         driver.quit()
